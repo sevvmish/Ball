@@ -20,6 +20,7 @@ public class UISound : MonoBehaviour
     [SerializeField] private AudioClip click;
     [SerializeField] private AudioClip stretching;
     [SerializeField] private AudioClip impact;
+    [SerializeField] private AudioClip lowImpact;
 
     private AudioSource _audio;
     private int lastRandomForHit;
@@ -108,17 +109,19 @@ public class UISound : MonoBehaviour
                 break;
 
             case SoundsUI.win:
-                _audio.clip = win;
+                _audio.clip = win;                
                 _audio.Play();
                 break;
 
             case SoundsUI.lose:
+                _audio.volume = 0.4f;
                 _audio.clip = lose;
                 _audio.Play();
                 break;
 
             case SoundsUI.start:
                 _audio.clip = startLevel;
+                _audio.volume = 0.2f;
                 _audio.pitch = 1.2f;
                 _audio.Play();
                 break;
@@ -145,6 +148,12 @@ public class UISound : MonoBehaviour
 
             case SoundsUI.impact:
                 _audio.clip = impact;
+                _audio.volume = 0.9f;
+                _audio.Play();
+                break;
+
+            case SoundsUI.low_impact:
+                _audio.clip = lowImpact;
                 _audio.volume = 0.5f;
                 _audio.Play();
                 break;
@@ -167,6 +176,7 @@ public enum SoundsUI
     pop,
     click,
     stretching,
-    impact
+    impact,
+    low_impact
 
 }

@@ -8,8 +8,15 @@ public class LevelManager : MonoBehaviour
     public GameObject[] Levels;
     public GameObject[] Balls;
 
+    [SerializeField] private GameObject gameFieldPC;
+    [SerializeField] private GameObject gameFieldMobile;
+    private bool isReady;
+
     [SerializeField] private GameObject explosionExample;
     private ObjectPool explosionPool;
+
+    [SerializeField] private GameObject fireExplosionExample;
+    private ObjectPool fireExplosionPool;
 
     private int currentLevelNumber;
     private GameObject currentLevelObject;
@@ -18,8 +25,15 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         HideAll();
+
         explosionExample.SetActive(false);
-        explosionPool = new ObjectPool(5, explosionExample, transform);
+        explosionPool = new ObjectPool(10, explosionExample, transform);
+
+        fireExplosionExample.SetActive(false);
+        fireExplosionPool = new ObjectPool(5, fireExplosionExample, transform);
+
+        gameFieldPC.SetActive(false);
+        gameFieldMobile.SetActive(false);
     }
 
     public void SetData(int level)
@@ -33,11 +47,41 @@ public class LevelManager : MonoBehaviour
             if (currentLevelObject.transform.GetChild(i).TryGetComponent(out Block b))
             {
                 activeBlocks.Add(b);
-                
             }
         }
     }
 
+    private void Update()
+    {
+        if (Globals.IsInitiated && !isReady)
+        {
+            isReady = true;
+
+            if (Globals.IsMobile)
+            {
+                gameFieldPC.SetActive(false);
+                gameFieldMobile.SetActive(true);
+            }
+            else
+            {
+                gameFieldPC.SetActive(true);
+                gameFieldMobile.SetActive(false);
+            }
+        }
+    }
+
+    public void MakeFireExplosion(Vector3 pos)
+    {
+        GameObject g = fireExplosionPool.GetObject();
+        g.transform.position = pos;
+        g.SetActive(true);
+        StartCoroutine(playFireExplosion(g));
+    }
+    private IEnumerator playFireExplosion(GameObject g)
+    {
+        yield return new WaitForSeconds(1.2f);
+        fireExplosionPool.ReturnObject(g);
+    }
     public void MakeExplosion(Vector3 pos)
     {
         GameObject g = explosionPool.GetObject();

@@ -26,5 +26,5 @@ public class Globals : MonoBehaviour
     public const float SCREEN_SAVER_AWAIT = 1f;
 
     //Gameplay
-    public const float BALL_SPEED = 15;
+    public const float BALL_SPEED = 14;
 }

@@ -32,9 +32,23 @@ public class BallHit : MonoBehaviour
 
             gm.CheckWinCondition();
         }
-        
+        else if (collision.gameObject.layer == 0)
+        {
+            collision.gameObject.transform.DOPunchPosition(new Vector3(UnityEngine.Random.Range(-0.2f, 0.2f), 0, UnityEngine.Random.Range(-0.2f, 0.2f)), 0.2f, 30).SetEase(Ease.OutQuad);
+        }
+        else if (collision.gameObject.layer == 9)
+        {
+            collision.gameObject.transform.DOPunchPosition(new Vector3(UnityEngine.Random.Range(-0.2f, 0.2f), 0, UnityEngine.Random.Range(-0.2f, 0.2f)), 0.2f, 30).SetEase(Ease.OutQuad);
+            
+            Vector3 point = collision.contacts[0].point;
+            lm.MakeFireExplosion(new Vector3(point.x, 0.4f, point.z));
+            gameObject.SetActive(false);
+            gm.CheckWinCondition();
+            
+        }
     }
 
+    
     private void OnTriggerEnter(Collider other)
     {
         //death

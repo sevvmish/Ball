@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     private float cameraRayCast = 20f;
 
     private LayerMask ignoreMask;
+    private LayerMask mask;
     private GameManager gm;
     private LevelManager lm;
     private UISound sounds;
@@ -31,7 +32,8 @@ public class InputManager : MonoBehaviour
         sounds = UISound.Instance;
         arrow.gameObject.SetActive(false);
         startPointer.gameObject.SetActive(false);
-        ignoreMask = LayerMask.GetMask(new string[] { "block" });
+        ignoreMask = LayerMask.GetMask(new string[] { "block", "death" });
+        mask = LayerMask.GetMask(new string[] { "back" });
     }
 
     // Update is called once per frame

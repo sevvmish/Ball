@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        
     }
 
     private void Start()
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
             IsPlaying = false;
             Globals.MainPlayerData.Lvl++;
             SaveLoadManager.Save();
+            YandexGame.NewLeaderboardScores("lider", Globals.MainPlayerData.Lvl);
             StartCoroutine(playWin());
         }
         else if (!isWin)
@@ -92,7 +95,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator playNextLevel()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         ScreenSaver.Instance.Close();
 
         yield return new WaitForSeconds(Globals.SCREEN_SAVER_AWAIT / 2);
@@ -153,6 +156,9 @@ public class GameManager : MonoBehaviour
                 Globals.TimeWhenLastInterstitialWas = DateTime.Now;
                 Globals.TimeWhenLastRewardedWas = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
             }
+
+            //TO DEL
+            Globals.MainPlayerData.Lvl = 25;
 
             localize();
             playWhenInitialized();
