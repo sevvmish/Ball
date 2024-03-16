@@ -24,6 +24,11 @@ public class InputManager : MonoBehaviour
     private Vector3 pointToHit;
     private Vector3 startPoint;
 
+    private float currentShotTime;
+    private Rigidbody currentRB;
+    private bool isShot;
+    public float timeToReactChange = 3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +44,18 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
+        if (isShot)
+        {
+            currentShotTime += Time.deltaTime;
+
+            if (currentShotTime > timeToReactChange)
+            {
+                currentShotTime = 0;
+                currentRB.velocity += new Vector3(0.1f, 0, 0.1f) * Globals.BALL_SPEED;
+                print("CHANGED!!!!!!!!!!");
+            }
+        }
+
         if (Input.GetMouseButton(0) && gm.IsPlaying && gm.PointerClickedCount <= 0)
         {
             ray = _camera.ScreenPointToRay(Input.mousePosition);
@@ -106,6 +123,8 @@ public class InputManager : MonoBehaviour
         ballRb.transform.position = startPos;
         Vector3 dir = (aim - ballRb.transform.position).normalized;
         ballRb.velocity = dir * Globals.BALL_SPEED;
+        isShot = true;
+        currentRB = ballRb;
     }
 
     public void Restart()
@@ -115,5 +134,7 @@ public class InputManager : MonoBehaviour
         isUnpressed = false;
         isStretchingSound = false;
         startPointer.gameObject.SetActive(false);
+        isShot = false;
+        currentShotTime = 0;
     }
 }
