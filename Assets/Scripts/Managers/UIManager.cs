@@ -20,8 +20,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button optionsButton;
     [SerializeField] private OptionsUI optionsUI;
 
-    [Header("restart data TO DEL")]
+    [Header("restart")]
     [SerializeField] private Button restartButton;
+
+    [Header("skip")]
+    [SerializeField] private Button skipButton;
+
+    [Header("reset data TO DEL")]
+    [SerializeField] private Button resetButton;
 
     private UISound sounds;
     private GameManager gm;
@@ -32,6 +38,8 @@ public class UIManager : MonoBehaviour
         sounds = UISound.Instance;
         winPanel.SetActive(false);
         optionsButton.gameObject.SetActive(true);
+        skipButton.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
 
         ScreenSaver.Instance.Open();
 
@@ -41,11 +49,23 @@ public class UIManager : MonoBehaviour
             optionsUI.OpenPanel();
         });
 
-        restartButton.onClick.AddListener(() =>
+        resetButton.onClick.AddListener(() =>
         {
             sounds.PlaySound(SoundsUI.click);
             Globals.MainPlayerData = new PlayerData();
             SaveLoadManager.Save();
+            SceneManager.LoadScene("Gameplay");
+        });
+
+        restartButton.onClick.AddListener(() =>
+        {
+            sounds.PlaySound(SoundsUI.click);            
+            SceneManager.LoadScene("Gameplay");
+        });
+
+        skipButton.onClick.AddListener(() =>
+        {
+            sounds.PlaySound(SoundsUI.click);
             SceneManager.LoadScene("Gameplay");
         });
     }
@@ -82,6 +102,8 @@ public class UIManager : MonoBehaviour
     public void ShowWinPanel()
     {
         optionsButton.gameObject.SetActive(false);
+        skipButton.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(false);
         levelPanel.SetActive(false);
 
         winText.text = Globals.Language.WinText;

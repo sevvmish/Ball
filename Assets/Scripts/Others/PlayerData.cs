@@ -24,7 +24,7 @@ public class PlayerData
         Mus = 1; // music
         Zoom = 0; //camera zoom
         Lvl = 0;
-        AdvOff = false;
+        AdvOff = true;
 
         Debug.Log("created PlayerData instance");
     }
