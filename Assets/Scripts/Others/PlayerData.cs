@@ -16,6 +16,9 @@ public class PlayerData
 
     public bool AdvOff;
 
+    public bool Tut1;
+
+
     public PlayerData()
     {        
         L = ""; //prefered language
@@ -25,6 +28,7 @@ public class PlayerData
         Zoom = 0; //camera zoom
         Lvl = 0;
         AdvOff = true;
+        Tut1 = false;
 
         Debug.Log("created PlayerData instance");
     }

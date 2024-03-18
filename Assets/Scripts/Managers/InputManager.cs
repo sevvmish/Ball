@@ -29,6 +29,8 @@ public class InputManager : MonoBehaviour
     private bool isShot;
     public float timeToReactChange = 3f;
 
+    private bool isReady;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,20 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
+        if (Globals.IsInitiated && !isReady)
+        {
+            isReady = true;
+
+            if (Globals.MainPlayerData.AdvOff)
+            {
+                _camera.orthographicSize = 6.7f;
+            }
+            else
+            {
+                _camera.orthographicSize = 6f;
+            }
+        }
+
         if (isShot)
         {
             currentShotTime += Time.deltaTime;
@@ -58,6 +74,8 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButton(0) && gm.IsPlaying && gm.PointerClickedCount <= 0)
         {
+            Globals.IsTouched = true;
+
             ray = _camera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, cameraRayCast, ~ignoreMask))

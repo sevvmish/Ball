@@ -50,6 +50,10 @@ public class GameManager : MonoBehaviour
         {
             isWin = true;
             IsPlaying = false;
+
+            YandexMetrica.Send("win" + Globals.MainPlayerData.Lvl);
+            Globals.Loses = 0;
+
             Globals.MainPlayerData.Lvl++;
             SaveLoadManager.Save();
             YandexGame.NewLeaderboardScores("lider", Globals.MainPlayerData.Lvl);
@@ -60,6 +64,13 @@ public class GameManager : MonoBehaviour
             if (!levelManager.IsAnyActiveBall() && !isLose)
             {
                 isLose = true;
+                Globals.Loses++;
+
+                if (Globals.Loses >= 5) 
+                {
+                    YandexMetrica.Send("lose" + Globals.MainPlayerData.Lvl);
+                }
+
                 IsPlaying = false;
                 StartCoroutine(playLose());
             }
@@ -68,6 +79,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator playLose()
     {
+        
+
         yield return new WaitForSeconds(0.3f);
         UISound.Instance.PlaySound(SoundsUI.lose);
         levelManager.Restart();
@@ -158,7 +171,7 @@ public class GameManager : MonoBehaviour
             }
 
             //TO DEL
-            Globals.MainPlayerData.Lvl = 36;
+            //Globals.MainPlayerData.Lvl = 40;
 
             localize();
             playWhenInitialized();
@@ -175,6 +188,8 @@ public class GameManager : MonoBehaviour
         {
             QualitySettings.antiAliasing = 4;
         }
+
+        
 
         YandexGame.StickyAdActivity(!Globals.MainPlayerData.AdvOff);
         levelManager.SetData(Globals.MainPlayerData.Lvl);        

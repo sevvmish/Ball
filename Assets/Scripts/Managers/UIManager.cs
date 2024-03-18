@@ -29,11 +29,30 @@ public class UIManager : MonoBehaviour
     [Header("reset data TO DEL")]
     [SerializeField] private Button resetButton;
 
+    [Header("tutorial")]
+    [SerializeField] private GameObject tutorial1;
+    [SerializeField] private RectTransform hand;
+    [SerializeField] private RectTransform point1;
+    [SerializeField] private RectTransform point2;
+    [SerializeField] private GameObject sign1;
+    [SerializeField] private TextMeshProUGUI sign1Text;
+    [SerializeField] private GameObject sign2;
+    [SerializeField] private TextMeshProUGUI sign2Text;
+    [SerializeField] private GameObject arrow;
+    [SerializeField] private Image up;
+    [SerializeField] private Image down;
+
     private UISound sounds;
     private GameManager gm;
 
     private void Start()
     {
+        tutorial1.SetActive(false);
+        hand.gameObject.SetActive(false);
+        sign1.SetActive(false);
+        sign2.SetActive(false);
+        arrow.SetActive(false);
+
         gm = GameManager.Instance;
         sounds = UISound.Instance;
         winPanel.SetActive(false);
@@ -75,6 +94,11 @@ public class UIManager : MonoBehaviour
         sounds.PlaySound(SoundsUI.start);
         levelPanel.SetActive(false);
         StartCoroutine(playStartLevel());
+
+        if (Globals.MainPlayerData.Lvl == 0 && !Globals.MainPlayerData.Tut1)
+        {
+            StartCoroutine(playTutorial1());
+        }
     }
     private IEnumerator playStartLevel()
     {
@@ -97,6 +121,68 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         GameManager.Instance.GameReady();
+    }
+
+    private IEnumerator playTutorial1()
+    {
+        up.color = new Color(0, 0, 0, 0);
+        down.color = new Color(0, 0, 0, 0);
+        up.DOColor(new Color(0, 0, 0, 1), 2f).SetEase(Ease.Linear);
+        down.DOColor(new Color(0, 0, 0, 1), 2f).SetEase(Ease.Linear);
+
+        winPanel.SetActive(false);
+        optionsButton.gameObject.SetActive(false);
+        skipButton.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(false);
+        gm.PointerClickedCount = 1000;
+
+        yield return new WaitForSeconds(Globals.SCREEN_SAVER_AWAIT);
+        Globals.MainPlayerData.Tut1 = true;
+        SaveLoadManager.Save();
+
+        tutorial1.SetActive(true);
+        hand.gameObject.SetActive(true);
+        Globals.IsTouched = false;
+
+        hand.anchoredPosition = point1.anchoredPosition;
+        sign1.SetActive(true);
+        sign1.transform.localScale = Vector3.zero;
+        sign1.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutSine);
+        sign1Text.text = Globals.Language.Tutorial1_sign1;
+        sounds.PlaySound(SoundsUI.pop);
+        yield return new WaitForSeconds(2f);
+
+        hand.DOAnchorPos(point2.anchoredPosition, 2f).SetEase(Ease.Linear);
+        sign2.SetActive(true);
+        sign2.transform.localScale = Vector3.zero;
+        sign2.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutSine);
+        sign2Text.text = Globals.Language.Tutorial1_sign2;
+        sounds.PlaySound(SoundsUI.pop);
+
+        for (float i = 0; i < 2; i+=0.1f)
+        {
+            if (Globals.IsTouched) break;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        gm.PointerClickedCount = 0;
+
+        arrow.SetActive(true);
+        sign1.SetActive(false);
+
+        for (float i = 0; i < 5; i += 0.1f)
+        {
+            if (Globals.IsTouched) break;
+            yield return new WaitForSeconds(0.1f);
+        }
+        sign2.SetActive(false);
+        hand.gameObject.SetActive(false);
+        tutorial1.SetActive(false);
+        arrow.SetActive(false);
+
+        optionsButton.gameObject.SetActive(true);
+        skipButton.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
     }
 
     public void ShowWinPanel()

@@ -1,5 +1,5 @@
 {
-  "idSave": 348,
+  "idSave": 474,
   "isFirstSession": false,
   "language": "ru",
   "promptDone": false,
@@ -10,5 +10,5 @@
     true,
     false
   ],
-  "MainSave1": "{\"L\":\"ru\",\"M\":0,\"S\":1,\"Mus\":1,\"Zoom\":0.0,\"Lvl\":36,\"AdvOff\":false}"
+  "MainSave1": "{\"L\":\"ru\",\"M\":0,\"S\":1,\"Mus\":1,\"Zoom\":0.0,\"Lvl\":1,\"AdvOff\":true,\"Tut1\":true}"
 }
