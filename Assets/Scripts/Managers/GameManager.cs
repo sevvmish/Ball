@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         UISound.Instance.PlaySound(SoundsUI.lose);
         levelManager.Restart();
-        print("lose");
+        //print("lose");
 
         yield return new WaitForSeconds(0.3f);
         isLose = false;
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         UI.ShowWinPanel();
         UISound.Instance.PlaySound(SoundsUI.win);
         GoToNextLevel();
-        print("win");
+        //print("win");
     }
 
     public void GoToNextLevel()
@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
             }
 
             //TO DEL
-            //Globals.MainPlayerData.Lvl = 40;
+            //Globals.MainPlayerData.Lvl = 51;
 
             localize();
             playWhenInitialized();

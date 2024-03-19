@@ -34,6 +34,14 @@ public class Block : MonoBehaviour
 
     public void Restart()
     {
+        if (gameObject.TryGetComponent(out Rigidbody rb))
+        {
+            //rb.velocity = Vector3.zero;
+            RigidbodyConstraints current = rb.constraints;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            rb.constraints = current;
+        }
+
         transform.DOKill();
         transform.position = position;
         transform.eulerAngles = rotation;

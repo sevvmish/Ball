@@ -26,7 +26,7 @@ public class PlayerData
         S = 1; // sound on? 1 - true;        
         Mus = 1; // music
         Zoom = 0; //camera zoom
-        Lvl = 0;
+        Lvl = 16;
         AdvOff = true;
         Tut1 = false;
 
