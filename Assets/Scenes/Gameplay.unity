@@ -9663,7 +9663,7 @@ MonoBehaviour:
   PendulumAngle: 0
   PendulumSpeed: 0
   RotationAxis: 2
-  RotationSpeed: 4
+  RotationSpeed: 3
   FromPoint: {fileID: 0}
   ToPoint: {fileID: 0}
   MovementSpeed: 0
@@ -11222,7 +11222,7 @@ MonoBehaviour:
   PendulumAngle: 0
   PendulumSpeed: 0
   RotationAxis: 2
-  RotationSpeed: 4
+  RotationSpeed: 3
   FromPoint: {fileID: 0}
   ToPoint: {fileID: 0}
   MovementSpeed: 0
@@ -13309,7 +13309,7 @@ MonoBehaviour:
   PendulumAngle: 0
   PendulumSpeed: 0
   RotationAxis: 2
-  RotationSpeed: -3.5
+  RotationSpeed: -2.8
   FromPoint: {fileID: 0}
   ToPoint: {fileID: 0}
   MovementSpeed: 0
@@ -17944,7 +17944,7 @@ MonoBehaviour:
   PendulumAngle: 0
   PendulumSpeed: 0
   RotationAxis: 2
-  RotationSpeed: 4
+  RotationSpeed: 3
   FromPoint: {fileID: 0}
   ToPoint: {fileID: 0}
   MovementSpeed: 0
@@ -25991,7 +25991,7 @@ MonoBehaviour:
   PendulumAngle: 0
   PendulumSpeed: 0
   RotationAxis: 2
-  RotationSpeed: 4
+  RotationSpeed: 3
   FromPoint: {fileID: 0}
   ToPoint: {fileID: 0}
   MovementSpeed: 0
@@ -26567,7 +26567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1948854223
 Transform:
   m_ObjectHideFlags: 0
