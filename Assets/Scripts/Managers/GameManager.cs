@@ -216,7 +216,7 @@ public class GameManager : MonoBehaviour
             }
 
             //TO DEL
-            //Globals.MainPlayerData.Lvl = 60;
+            Globals.MainPlayerData.Lvl = 68;
 
             localize();
             playWhenInitialized();

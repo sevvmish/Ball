@@ -41,7 +41,7 @@ public class AmbientSound : MonoBehaviour
     {
         if (!Globals.IsMusicOn) return;
 
-        _audio.volume = 0.5f;
+        _audio.volume = 0.2f;
         _audio.loop = true;
 
         switch (sound)
