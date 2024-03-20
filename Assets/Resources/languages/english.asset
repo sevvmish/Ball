@@ -16,3 +16,5 @@ MonoBehaviour:
   WinText: YOU WIN!
   Tutorial1_sign1: Touch the screen in any place.
   Tutorial1_sign2: Swipe anywhere and let go of your finger!
+  RewardedText: Do you want to skip current level by watching advertising?
+  RewardedError: Error! Please try again later.

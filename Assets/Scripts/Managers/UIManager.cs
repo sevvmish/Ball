@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,6 +30,15 @@ public class UIManager : MonoBehaviour
     [Header("reset data TO DEL")]
     [SerializeField] private Button resetButton;
 
+    [Header("ADV rewarded")]
+    [SerializeField] private Rewarded rewarded;
+    [SerializeField] private GameObject rewardedPanel;
+    [SerializeField] private GameObject rewardedErrorPanel;
+    [SerializeField] private TextMeshProUGUI rewardedText;
+    [SerializeField] private TextMeshProUGUI rewardedErrorText;
+    [SerializeField] private Button rewardedOK;
+    [SerializeField] private Button rewardedNO;
+
     [Header("tutorial")]
     [SerializeField] private GameObject tutorial1;
     [SerializeField] private RectTransform hand;
@@ -44,6 +54,7 @@ public class UIManager : MonoBehaviour
 
     private UISound sounds;
     private GameManager gm;
+    private bool isReady;
 
     private void Start()
     {
@@ -59,6 +70,9 @@ public class UIManager : MonoBehaviour
         optionsButton.gameObject.SetActive(true);
         skipButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
+
+        rewardedPanel.SetActive(false);
+        rewardedErrorPanel.SetActive(false);
 
         ScreenSaver.Instance.Open();
 
@@ -85,8 +99,54 @@ public class UIManager : MonoBehaviour
         skipButton.onClick.AddListener(() =>
         {
             sounds.PlaySound(SoundsUI.click);
-            SceneManager.LoadScene("Gameplay");
+            rewardedPanel.SetActive(true);
+            rewardedText.text = Globals.Language.RewardedText;
         });
+        rewardedOK.onClick.AddListener(() =>
+        {
+            sounds.PlaySound(SoundsUI.click);
+            makeSkip();
+        });
+        rewardedNO.onClick.AddListener(() =>
+        {
+            sounds.PlaySound(SoundsUI.click);
+            rewardedPanel.SetActive(false);
+        });      
+
+        
+    }
+
+    public void Restart()
+    {
+        isReady = false;
+    }
+
+    private void Update()
+    {
+        if (Globals.IsInitiated && !isReady)
+        {
+            isReady = true;
+
+            if (Globals.MainPlayerData.Lvl >= 5 && Globals.Loses >= 5)
+            {
+                skipButton.GetComponent<TrambleUI>().enabled = true;
+                skipButton.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+            }
+            else
+            {
+                skipButton.GetComponent<TrambleUI>().enabled = false;
+                skipButton.GetComponent<RectTransform>().sizeDelta = new Vector2(130, 130);
+            }
+
+            if (Globals.MainPlayerData.Lvl >= 5 && !Globals.MainPlayerData.AdvOff && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds >= Globals.REWARDED_COOLDOWN)
+            {
+                skipButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                skipButton.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void StartLevel()
@@ -121,6 +181,31 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         GameManager.Instance.GameReady();
+    }
+
+    private void makeSkip()
+    {        
+        rewarded.OnRewardedEndedOK = NextLevelAfterRewarded;
+        rewarded.OnError = rewardedError;
+        rewarded.ShowRewardedVideo();
+    }
+
+    private void rewardedError()
+    {
+        rewardedErrorText.text = Globals.Language.RewardedError;
+        rewardedErrorPanel.SetActive(true);
+        sounds.PlaySound(SoundsUI.error);
+        StartCoroutine(playError());
+    }
+    private IEnumerator playError()
+    {
+        yield return new WaitForSeconds(3f);
+        rewardedErrorPanel.SetActive(false);
+    }
+
+    private void NextLevelAfterRewarded()
+    {
+        gm.NextLevelForRewarded();
     }
 
     private IEnumerator playTutorial1()
@@ -181,7 +266,6 @@ public class UIManager : MonoBehaviour
         arrow.SetActive(false);
 
         optionsButton.gameObject.SetActive(true);
-        skipButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
     }
 

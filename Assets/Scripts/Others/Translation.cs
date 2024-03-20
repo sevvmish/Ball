@@ -11,6 +11,9 @@ public class Translation : ScriptableObject
     public string Tutorial1_sign1;
     public string Tutorial1_sign2;
 
+    public string RewardedText;
+    public string RewardedError;
+
 
     public Translation() { }
 }

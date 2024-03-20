@@ -53,4 +53,13 @@ public class ScreenSaver : MonoBehaviour
         left.DOAnchorPos(new Vector2(-1400, 0), speed).SetEase(Ease.InSine);
         right.DOAnchorPos(new Vector2(1400, 0), speed).SetEase(Ease.InSine);
     }
+
+    public void Black()
+    {
+        left.gameObject.SetActive(true);
+        right.gameObject.SetActive(true);
+
+        left.anchoredPosition = new Vector2(-1400, 0);
+        right.anchoredPosition = new Vector2(1400, 0);
+    }
 }

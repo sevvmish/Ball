@@ -114,7 +114,7 @@ public class UISound : MonoBehaviour
                 break;
 
             case SoundsUI.lose:
-                _audio.volume = 0.4f;
+                _audio.volume = 0.3f;
                 _audio.clip = lose;
                 _audio.Play();
                 break;

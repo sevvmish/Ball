@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private UIManager UI;
-    [SerializeField] private InputManager inputManager;
+    [SerializeField] private InputManager inputManager;    
+    [SerializeField] private Interstitial interstitial;
 
     private bool isWin, isLose;
 
@@ -78,9 +79,7 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator playLose()
-    {
-        
-
+    {        
         yield return new WaitForSeconds(0.3f);
         UISound.Instance.PlaySound(SoundsUI.lose);
         levelManager.Restart();
@@ -90,31 +89,77 @@ public class GameManager : MonoBehaviour
         isLose = false;
         IsPlaying = true;
         inputManager.Restart();
+        UI.Restart();
     }
 
     private IEnumerator playWin()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
         levelManager.HideAll();
         UI.ShowWinPanel();
         UISound.Instance.PlaySound(SoundsUI.win);
-        GoToNextLevel();
+        GoToNextLevel(false);
         //print("win");
     }
 
-    public void GoToNextLevel()
+    public void NextLevelForRewarded()
     {
-        StartCoroutine(playNextLevel());
-    }
-    private IEnumerator playNextLevel()
-    {
-        yield return new WaitForSeconds(1f);
-        ScreenSaver.Instance.Close();
+        YandexMetrica.Send("rewarded" + Globals.MainPlayerData.Lvl);
+        Globals.Loses = 0;
 
-        yield return new WaitForSeconds(Globals.SCREEN_SAVER_AWAIT / 2);
-        UI.HideWinPanel();
-        yield return new WaitForSeconds(Globals.SCREEN_SAVER_AWAIT / 2);
-        SceneManager.LoadScene("Gameplay");
+        Globals.MainPlayerData.Lvl++;
+        SaveLoadManager.Save();
+        YandexGame.NewLeaderboardScores("lider", Globals.MainPlayerData.Lvl);
+        GoToNextLevel(true);
+    }
+    public void GoToNextLevel(bool isRewarded)
+    {
+        if (isRewarded)
+        {
+            StartCoroutine(playNextLevel(false));
+        }
+        else
+        {
+            StartCoroutine(playNextLevel(true));            
+        }
+        
+    }
+    private void nextLevelAfterInterstitial()
+    {
+        StartCoroutine(playNextLevel(false));
+    }
+    private IEnumerator playNextLevel(bool isClosing)
+    {
+        if (isClosing)
+        {
+            yield return new WaitForSeconds(1f);
+            ScreenSaver.Instance.Close();
+
+            yield return new WaitForSeconds(Globals.SCREEN_SAVER_AWAIT / 2);
+            UI.HideWinPanel();
+            yield return new WaitForSeconds(Globals.SCREEN_SAVER_AWAIT / 2);
+        }
+        else
+        {
+            ScreenSaver.Instance.Black();
+        }
+
+        if (isClosing)
+        {
+            if (!Globals.MainPlayerData.AdvOff && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds >= Globals.INTERSTITIAL_COOLDOWN)
+            {
+                interstitial.OnEnded = nextLevelAfterInterstitial;
+                interstitial.ShowInterstitialVideo();
+            }
+            else
+            {
+                SceneManager.LoadScene("Gameplay");
+            }
+        }
+        else
+        {
+            SceneManager.LoadScene("Gameplay");
+        }
     }
 
     private void Update()
@@ -171,7 +216,7 @@ public class GameManager : MonoBehaviour
             }
 
             //TO DEL
-            Globals.MainPlayerData.Lvl = 51;
+            //Globals.MainPlayerData.Lvl = 60;
 
             localize();
             playWhenInitialized();
@@ -190,7 +235,7 @@ public class GameManager : MonoBehaviour
         }
 
         
-
+        AmbientSound.Instance.ContinuePlaying();
         YandexGame.StickyAdActivity(!Globals.MainPlayerData.AdvOff);
         levelManager.SetData(Globals.MainPlayerData.Lvl);        
         UI.StartLevel();

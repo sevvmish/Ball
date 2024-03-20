@@ -26,8 +26,8 @@ public class PlayerData
         S = 1; // sound on? 1 - true;        
         Mus = 1; // music
         Zoom = 0; //camera zoom
-        Lvl = 16;
-        AdvOff = true;
+        Lvl = 0;
+        AdvOff = false;
         Tut1 = false;
 
         Debug.Log("created PlayerData instance");
