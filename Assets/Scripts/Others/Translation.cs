@@ -14,6 +14,8 @@ public class Translation : ScriptableObject
     public string RewardedText;
     public string RewardedError;
 
+    public string FinalText;
+
 
     public Translation() { }
 }

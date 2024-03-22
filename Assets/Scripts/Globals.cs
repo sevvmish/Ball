@@ -29,4 +29,5 @@ public class Globals : MonoBehaviour
     public const float BALL_SPEED = 14;
     public static int Loses;
     public static bool IsTouched;
+    public const int LAST_LVL = 100;
 }

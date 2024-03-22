@@ -27,9 +27,7 @@ public class UIManager : MonoBehaviour
     [Header("skip")]
     [SerializeField] private Button skipButton;
 
-    [Header("reset data TO DEL")]
-    [SerializeField] private Button resetButton;
-
+    
     [Header("ADV rewarded")]
     [SerializeField] private Rewarded rewarded;
     [SerializeField] private GameObject rewardedPanel;
@@ -52,6 +50,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image up;
     [SerializeField] private Image down;
 
+    [Header("final")]
+    [SerializeField] private GameObject finalPanel;
+    [SerializeField] private TextMeshProUGUI finalText;
+    [SerializeField] private Button resetButton;
+
     private UISound sounds;
     private GameManager gm;
     private bool isReady;
@@ -63,6 +66,7 @@ public class UIManager : MonoBehaviour
         sign1.SetActive(false);
         sign2.SetActive(false);
         arrow.SetActive(false);
+        finalPanel.SetActive(false);
 
         gm = GameManager.Instance;
         sounds = UISound.Instance;
@@ -121,8 +125,20 @@ public class UIManager : MonoBehaviour
         isReady = false;
     }
 
+    public void Final()
+    {
+        finalText.text = Globals.Language.FinalText;
+        finalPanel.SetActive(true);
+        levelPanel.SetActive(false);
+        optionsButton.gameObject.SetActive(false);
+        skipButton.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(false);
+
+    }
+
     private void Update()
     {
+        
         if (Globals.IsInitiated && !isReady)
         {
             isReady = true;
@@ -138,7 +154,7 @@ public class UIManager : MonoBehaviour
                 skipButton.GetComponent<RectTransform>().sizeDelta = new Vector2(130, 130);
             }
 
-            if (Globals.MainPlayerData.Lvl >= 5 && !Globals.MainPlayerData.AdvOff && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds >= Globals.REWARDED_COOLDOWN)
+            if (Globals.MainPlayerData.Lvl >= 5 && Globals.MainPlayerData.Lvl < Globals.LAST_LVL && !Globals.MainPlayerData.AdvOff && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds >= Globals.REWARDED_COOLDOWN)
             {
                 skipButton.gameObject.SetActive(true);
             }

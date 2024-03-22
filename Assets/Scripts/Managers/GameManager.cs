@@ -52,6 +52,16 @@ public class GameManager : MonoBehaviour
             isWin = true;
             IsPlaying = false;
 
+            if (Globals.MainPlayerData.Lvl == Globals.LAST_LVL)
+            {
+                //---
+                YandexMetrica.Send("win" + Globals.MainPlayerData.Lvl);
+                YandexGame.NewLeaderboardScores("lider", Globals.LAST_LVL);
+                UISound.Instance.PlaySound(SoundsUI.win);
+                UI.Final();
+                return;
+            }
+
             YandexMetrica.Send("win" + Globals.MainPlayerData.Lvl);
             Globals.Loses = 0;
 
@@ -172,6 +182,16 @@ public class GameManager : MonoBehaviour
             SaveLoadManager.Save();
             SceneManager.LoadScene("Gameplay");
         }
+        /*
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Globals.Loses = 0;
+
+            Globals.MainPlayerData.Lvl++;
+            SaveLoadManager.Save();
+
+            SceneManager.LoadScene("Gameplay");
+        }*/
 
         if (YandexGame.SDKEnabled && !Globals.IsInitiated)
         {
@@ -216,7 +236,7 @@ public class GameManager : MonoBehaviour
             }
 
             //TO DEL
-            //Globals.MainPlayerData.Lvl = 86;
+            //Globals.MainPlayerData.Lvl = 10;
 
             localize();
             playWhenInitialized();

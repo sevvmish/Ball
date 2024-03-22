@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour
             {
                 currentShotTime = 0;
                 currentRB.velocity += new Vector3(0.1f, 0, 0.1f) * Globals.BALL_SPEED;
-                print("CHANGED!!!!!!!!!!");
+                //print("CHANGED!!!!!!!!!!");
             }
         }
 
